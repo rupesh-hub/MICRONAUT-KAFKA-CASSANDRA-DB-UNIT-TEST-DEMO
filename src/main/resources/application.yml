@@ -1,0 +1,31 @@
+#Wed Oct 04 07:42:03 GMT 2023
+micronaut:
+  application:
+    name: MICRONAUT-KAFKA-APP
+  server:
+    context-path: /user-api/v1
+    port: 8888
+
+  caches:
+    headlines:
+      charset: 'UTF-8'
+
+cassandra:
+  host: ${DB_HOST:`20.219.183.69`}
+  port: ${DB_PORT:`9042`}
+  username: ${DB_USER:`cassandra`}
+  password: ${DB_PASSWORD:`CEWerGlrXd`}
+  datacenter: ${DB_DATACENTER:`datacenter1`}
+  keyspace: ${DB_NAME:`test_123`}
+
+kafka:
+  bootstrap-servers: ${KAFKA_URL:`localhost:9092`}
+  enable-auto-commit: true
+  auto_offset_reset_config: latest
+  group-id: ${KAFKA-GROUP:`demo-group`}
+  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  key-serializer: org.apache.kafka.common.serialization.StringSerializer
+  value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+

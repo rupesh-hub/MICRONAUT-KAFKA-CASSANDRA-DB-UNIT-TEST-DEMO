@@ -1,5 +1,6 @@
 package com.rupesh;
 
+import com.rupesh.configuration.CassandraSessionFactory;
 import io.micronaut.runtime.Micronaut;
 
 public class Application {

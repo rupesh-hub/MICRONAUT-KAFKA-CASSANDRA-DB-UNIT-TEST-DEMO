@@ -3,9 +3,9 @@ package com.rupesh.configuration;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.rupesh.logging.CustomLogger;
-import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Primary;
+import com.rupesh.mdel.CassandraConfigProperties;
+import io.micronaut.context.annotation.*;
+import jakarta.inject.Inject;
 
 import java.net.InetSocketAddress;
 
@@ -14,18 +14,24 @@ import static java.time.Duration.ofSeconds;
 
 @Factory
 public class CassandraSessionFactory {
+
     private final CqlSession cqlSession;
     private static final CustomLogger LOGGER = CustomLogger.getInstance(CassandraSessionFactory.class);
 
-    public CassandraSessionFactory() {
+    private final CassandraConfigProperties cassandraConfigProperties;
+
+    @Inject
+
+    public CassandraSessionFactory(CassandraConfigProperties cassandraConfigProperties) {
+        this.cassandraConfigProperties = cassandraConfigProperties;
         LOGGER.log("<<<< CASSANDRA CONNECTION LOADED >>>>>");
 
         cqlSession = CqlSession
                 .builder()
-                .addContactPoint(new InetSocketAddress("20.219.183.69", 9042))
-                .withLocalDatacenter("datacenter1")
-                .withAuthCredentials("cassandra", "CEWerGlrXd")
-                .withKeyspace("test_123")
+                .addContactPoint(new InetSocketAddress(cassandraConfigProperties.host(), cassandraConfigProperties.port()))
+                .withLocalDatacenter(cassandraConfigProperties.datacenter())
+                .withAuthCredentials(cassandraConfigProperties.username(), cassandraConfigProperties.password())
+                .withKeyspace(cassandraConfigProperties.keyspace())
                 .withConfigLoader(
                         DriverConfigLoader
                                 .programmaticBuilder()
@@ -47,5 +53,6 @@ public class CassandraSessionFactory {
     public CqlSession getCqlSession() {
         return cqlSession;
     }
+
 }
 
